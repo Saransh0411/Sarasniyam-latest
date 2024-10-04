@@ -1,0 +1,111 @@
+import {
+  BookCheck,
+  CalendarCheck,
+  CalendarDays,
+  FileText,
+  GraduationCap,
+  Home,
+  ListTodo,
+  LogOut,
+  MessageSquareMore,
+  School,
+  Settings,
+  Speech,
+  Trophy,
+  UserRoundPen,
+  UsersRound,
+} from 'lucide-react';
+
+export const NavLinks = [
+  {
+    name: 'Dashboard',
+    icon: Home,
+    href: '/admin',
+    visible: ['admin'],
+  },
+  {
+    name: 'Teachers',
+    icon: UsersRound,
+    href: '/list/teachers',
+    visible: ['admin', 'teacher'],
+  },
+  {
+    name: 'Students',
+    icon: GraduationCap,
+    href: '/list/students',
+    visible: ['admin', 'teacher'],
+  },
+  {
+    name: 'Subjects',
+    icon: ListTodo,
+    href: '/list/subjects',
+    visible: ['admin'],
+  },
+  {
+    name: 'Batches',
+    icon: School,
+    href: '/list/batches',
+    visible: ['admin', 'teacher'],
+  },
+  {
+    name: 'Exams',
+    icon: BookCheck,
+    href: '/list/exams',
+    visible: ['admin', 'teacher', 'student', 'parent'],
+  },
+  {
+    name: 'Assignments',
+    icon: FileText,
+    href: '/list/assignments',
+    visible: ['admin', 'teacher', 'student', 'parent'],
+  },
+  {
+    name: 'Results',
+    icon: Trophy,
+    href: '/list/results',
+    visible: ['admin', 'teacher', 'student', 'parent'],
+  },
+  {
+    name: 'Attendance',
+    icon: CalendarCheck,
+    href: '/list/attendance',
+    visible: ['admin', 'teacher', 'student', 'parent'],
+  },
+  {
+    name: 'Events',
+    icon: CalendarDays,
+    href: '/list/events',
+    visible: ['admin', 'teacher', 'student', 'parent'],
+  },
+  {
+    name: 'Messages',
+    icon: MessageSquareMore,
+    href: '/list/messages',
+    visible: ['admin', 'teacher', 'student', 'parent'],
+  },
+  {
+    name: 'Announcements',
+    icon: Speech,
+    href: '/list/announcements',
+    visible: ['admin', 'teacher', 'student', 'parent'],
+  },
+
+  {
+    name: 'Profile',
+    icon: UserRoundPen,
+    href: '/profile',
+    visible: ['admin', 'teacher', 'student', 'parent'],
+  },
+  {
+    name: 'Settings',
+    icon: Settings,
+    href: '/settings',
+    visible: ['admin', 'teacher', 'student', 'parent'],
+  },
+  {
+    name: 'Logout',
+    icon: LogOut,
+    href: '/logout',
+    visible: ['admin', 'teacher', 'student', 'parent'],
+  },
+];
