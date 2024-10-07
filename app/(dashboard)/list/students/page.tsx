@@ -31,8 +31,7 @@ import { FeeStatuses, StudentsData, Batches } from '@/lib/Student';
 export default function Students() {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeButton, setActiveButton] = useState<'name' | 'rollNo'>('name');
-  const [sortBy, setSortBy] = useState<string | null>(null);
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' }[]>([]);
   const [filterBatch, setFilterBatch] = useState('');
   const [filterFeeStatus, setFilterFeeStatus] = useState('');
 
@@ -63,10 +62,12 @@ export default function Students() {
       });
     }
 
-    if (sortBy) {
-      result.sort((a, b) => {
-        if (a[sortBy] < b[sortBy]) return sortOrder === 'asc' ? -1 : 1;
-        if (a[sortBy] > b[sortBy]) return sortOrder === 'asc' ? 1 : -1;
+    if (sortConfig.length > 0) {
+      result.sort((a:any, b:any) => {
+        for (const { key, direction } of sortConfig) {
+          if (a[key] < b[key]) return direction === 'asc' ? -1 : 1;
+          if (a[key] > b[key]) return direction === 'asc' ? 1 : -1;
+        }
         return 0;
       });
     }
@@ -75,19 +76,24 @@ export default function Students() {
   }, [
     searchTerm,
     activeButton,
-    sortBy,
-    sortOrder,
+    sortConfig,
     filterBatch,
     filterFeeStatus,
   ]);
 
-  const handleSort = (field: string) => {
-    if (sortBy === field) {
-      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+  const handleSort = (key: string) => {
+    const newConfig = [...sortConfig];
+    const configIndex = newConfig.findIndex(item => item.key === key);
+    if (configIndex !== -1) {
+      if (newConfig[configIndex].direction === 'asc') {
+        newConfig[configIndex].direction = 'desc';
+      } else {
+        newConfig.splice(configIndex, 1);
+      }
     } else {
-      setSortBy(field);
-      setSortOrder('asc');
+      newConfig.push({ key, direction: 'asc' });
     }
+    setSortConfig(newConfig);
   };
 
   const resetFilters = () => {
@@ -96,8 +102,7 @@ export default function Students() {
   };
 
   const resetSort = () => {
-    setSortBy(null);
-    setSortOrder('asc');
+    setSortConfig([]);
   };
 
   return (
@@ -208,14 +213,14 @@ export default function Students() {
                       <MenubarItem onClick={() => handleSort('name')}>
                         <ArrowDownAZ className="mr-2 h-4 w-4" />
                         A-Z
-                        {sortBy === 'name' && sortOrder === 'asc' && (
+                        {sortConfig.some(config => config.key === 'name' && config.direction === 'asc') && (
                           <Check className="ml-2 h-4 w-4" />
                         )}
                       </MenubarItem>
                       <MenubarItem onClick={() => handleSort('name')}>
                         <ArrowDownZA className="mr-2 h-4 w-4" />
                         Z-A
-                        {sortBy === 'name' && sortOrder === 'desc' && (
+                        {sortConfig.some(config => config.key === 'name' && config.direction === 'desc') && (
                           <Check className="ml-2 h-4 w-4" />
                         )}
                       </MenubarItem>
@@ -228,14 +233,14 @@ export default function Students() {
                       <MenubarItem onClick={() => handleSort('batch')}>
                         <ArrowUpWideNarrow className="mr-2 h-4 w-4" />
                         A1-B2
-                        {sortBy === 'batch' && sortOrder === 'asc' && (
+                        {sortConfig.some(config => config.key === 'batch' && config.direction === 'asc') && (
                           <Check className="ml-2 h-4 w-4" />
                         )}
                       </MenubarItem>
                       <MenubarItem onClick={() => handleSort('batch')}>
                         <ArrowDownNarrowWide className="mr-2 h-4 w-4" />
                         B2-A1
-                        {sortBy === 'batch' && sortOrder === 'desc' && (
+                        {sortConfig.some(config => config.key === 'batch' && config.direction === 'desc') && (
                           <Check className="ml-2 h-4 w-4" />
                         )}
                       </MenubarItem>
